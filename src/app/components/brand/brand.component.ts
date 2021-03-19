@@ -1,27 +1,52 @@
+import { CursorError } from '@angular/compiler/src/ml_parser/lexer';
 import { Component, OnInit } from '@angular/core';
 import { Brand } from 'src/app/models/brand';
 import { BrandService } from 'src/app/services/brand.service';
-import { BrandResponseModel } from 'src/app/models/brandResponseModel';
 
 @Component({
   selector: 'app-brand',
   templateUrl: './brand.component.html',
-  styleUrls: ['./brand.component.css']
+  styleUrls: ['./brand.component.css'],
 })
 export class BrandComponent implements OnInit {
-  brands:Brand[] = [];
-  dataLoaded=false;
-  constructor(private brandService:BrandService) { }
+  brands: Brand[] = [];
+  currentBrand: Brand; // Bir Brand'e tıkladığımızda onu current olarak set ediyoruz
+
+  constructor(private brandService:BrandService) {}
 
   ngOnInit(): void {
     this.getBrands();
   }
 
-  getBrands(){
-    this.brandService.getBrands().subscribe(response=>{
-      this.brands=response.data
-      this.dataLoaded=true;
-    })
+  getBrands() {
+   this.brandService.getBrands().subscribe(response => {
+     this.brands = response.data;
+   })
   }
 
+  setCurrentBrand(brand:Brand){
+    this.currentBrand = brand;
+  }
+
+  getCurrentBrandClass(brand:Brand)
+  {
+    if(brand == this.currentBrand)
+    {
+      return "list-group-item list-group-item-secondary active";
+    }
+    else{
+      return "list-group-item list-group-item-secondary";
+    }
+  }
+
+  getAllBrandClass()
+  {
+    if(!this.currentBrand)
+    {
+      return "list-group-item list-group-item-secondary active";
+    }
+    else{
+      return "list-group-item list-group-item-secondary";
+    }
+  }
 }

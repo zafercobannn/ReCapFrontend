@@ -1,0 +1,21 @@
+<div class="row image-section">
+  <div *ngFor="let image of carImages" class="col-md-4 img-gallery">
+    <img
+      [src]="getImagePath(image.imagePath)"
+      class="img-fluid"
+      [alt]="getImagePath(image.imagePath)"
+    />
+  </div>
+</div>
+<ul *ngIf="carDtos" class="list-group list-group-flush">
+  <li class="list-group-item">Araç markası: {{ carDtos.brandName }}</li>
+  <li class="list-group-item">Rengi: {{ carDtos.colorName }}</li>
+  <li class="list-group-item">Model Yılı: {{ carDtos.modelYear }}</li>
+  <li class="list-group-item">Günlük fiyatı: {{ carDtos.dailyPrice }}</li>
+  <li class="list-group-item">Kiralanabilirliği: {{ carDtos.isRented }}</li>
+</ul>
+<div class="btn-goback">
+  <button routerLink="/cars" type="button" class="btn btn-xs btn-success">
+    Go Back
+  </button>
+</div>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Customer } from 'src/app/models/customer';
+import { CustomerDto } from 'src/app/models/customerDto';
 import { CustomerService } from 'src/app/services/customer.service';
-import { CustomerResponseModel } from 'src/app/models/customerResponseModel';
 
 @Component({
   selector: 'app-customer',
@@ -9,19 +9,27 @@ import { CustomerResponseModel } from 'src/app/models/customerResponseModel';
   styleUrls: ['./customer.component.css']
 })
 export class CustomerComponent implements OnInit {
-  customers:Customer[]=[];
-  dataLoaded=false;
+
+  customers:Customer[] = [];
+  customerDtos:CustomerDto[] = [];
+
   constructor(private customerService:CustomerService) { }
 
   ngOnInit(): void {
-    this.getCustomers();
+    this.getCustomerDtos();
   }
 
-  getCustomers(){
-    this.customerService.getCustomers().subscribe(response=>{
-      this.customers=response.data;
-      this.dataLoaded=true;
-    })
+  getCustomers()
+  {
+    this.customerService.getCustomers().subscribe(response => {
+      this.customers = response.data;
+    });
   }
 
+  getCustomerDtos()
+  {
+    this.customerService.getCustomerDtos().subscribe(response => {
+      this.customerDtos = response.data;
+    });
+  }
 }

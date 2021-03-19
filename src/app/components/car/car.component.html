@@ -1,26 +1,40 @@
-<h4 class="text-center">Car List</h4>
-<div *ngIf="dataLoaded==false" class="spinner-border text-primary" role="status">
-    <span class="visually-hidden">Loading...</span>
-  </div>
-  <table *ngIf="dataLoaded==true" class="table">
-    <thead class="thead-dark">
-      <tr>
-        <th>CarId</th>
-        <th>Brand</th>
-        <th>Color</th>
-        <th>ModelYear</th>
-        <th>DailyPrice</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let car of cars">
-        <td>{{ car.carId }}</td>
-        <td>{{ car.brandName }}</td>
-        <td>{{ car.colorName }}</td>
-        <td>{{ car.modelYear }}</td>
-        <td>{{ car.dailyPrice }}</td>
-        <td>{{ car.description }}</td>
-      </tr>
+<h4>Car List</h4>
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Brand ID</th>
+      <th scope="col">Color ID</th>
+      <th scope="col">Car Name</th>
+      <th scope="col">Model Year</th>
+      <th scope="col">Daily Price</th>
+      <th scope="col">Description</th>
+      <th scope="col">Is Rented ?</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let car of cars">
+      <td>{{ car.id }}</td>
+      <td>{{ car.brandID }}</td>
+      <td>{{ car.colorID }}</td>
+      <td>{{ car.name}}</td>
+      <td>{{ car.modelYear }}</td>
+      <td>{{ car.dailyPrice }} TL</td>
+      <td>{{ car.description |uppercase }}</td>
+      <td>{{ car.isRented }}
+        
+      </td>
+      <td>
+        <button
+          routerLink = "/cars/cardto/{{car.id}}"
+          type="button"
+          class="btn btn-xs btn-success"
+          (click)="getCarDtos(car.id)"
+        >
+          Detail
+        </button>
+      </td>
+    </tr>
   </tbody>
-  </table>
+</table>
