@@ -1,5 +1,12 @@
 h4
 {
-    margin-top: 50px;
+    margin-top: 20px;
     margin-bottom: 10px;
+}
+.form-group 
+{
+    margin-top: 60px;
+}
+.table td, .table th {
+    padding: .50rem;
 }

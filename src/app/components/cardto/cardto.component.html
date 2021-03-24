@@ -8,14 +8,33 @@
   </div>
 </div>
 <ul *ngIf="carDtos" class="list-group list-group-flush">
-  <li class="list-group-item">Araç markası: {{ carDtos.brandName }}</li>
-  <li class="list-group-item">Rengi: {{ carDtos.colorName }}</li>
-  <li class="list-group-item">Model Yılı: {{ carDtos.modelYear }}</li>
-  <li class="list-group-item">Günlük fiyatı: {{ carDtos.dailyPrice }}</li>
-  <li class="list-group-item">Kiralanabilirliği: {{ carDtos.isRented }}</li>
+  <li class="list-group-item">Brand Name: {{ carDtos.brandName }}</li>
+  <li class="list-group-item">Color Name: {{ carDtos.colorName }}</li>
+  <li class="list-group-item">Model Year: {{ carDtos.modelYear }}</li>
+  <li class="list-group-item">Model Year: {{ carDtos.modelYear }}</li>
+  <li class="list-group-item">Daily Price: {{ carDtos.dailyPrice }}</li>
+  <li class="list-group-item">Is Rented: {{ carDtos.isRented }}</li>
 </ul>
-<div class="btn-goback">
-  <button routerLink="/cars" type="button" class="btn btn-xs btn-success">
+
+<div class="btn-goback" style="margin-bottom: 30px">
+  <button
+    type="button"
+    class="btn btn-xs btn-success"
+    style="width: 100px; margin-right: 10px"
+    (click) = "getRentalPage(carDtos.isRented)"
+  >
+    Rent
+  </button>
+  <button
+    routerLink="/cars"
+    type="button"
+    class="btn btn-xs btn-primary"
+    style="width: 100px"
+  >
     Go Back
   </button>
+  
+</div>
+<div class="d-grid gap-2 mb-2" *ngIf="isRented == false">
+  <app-rental [carforrental]="carDtos"></app-rental>
 </div>

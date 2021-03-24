@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { CarDto } from 'src/app/models/cardto';
 import { CarImage } from 'src/app/models/carimage';
 import { CarService } from 'src/app/services/car.service';
@@ -16,7 +17,9 @@ export class CardtoComponent implements OnInit {
   carDtos:CarDto;
   carImages:CarImage[] = [];
   path = "https://localhost:44373/Images/";
-  constructor(private carService:CarService, private carImageService:CarimageService, private activetedRoute:ActivatedRoute) { }
+  isRented:boolean;
+  constructor(private carService:CarService, private carImageService:CarimageService, private activetedRoute:ActivatedRoute,
+    private toastrService:ToastrService) { }
 
   ngOnInit(): void {
     this.activetedRoute.params.subscribe(params => {
@@ -39,9 +42,22 @@ export class CardtoComponent implements OnInit {
       this.carImages = response.data;
     });
   }
+
   getImagePath(image:string)
   {
     let newPath = this.path + image;
     return newPath; 
+  }
+  getRentalPage(isRented:boolean)
+  {
+    this.isRented = isRented;
+    if(this.isRented == false)
+    {
+      return true;
+    }
+    else{
+      this.toastrService.error("This car has already been rented. Please choose another car.");
+      return false;
+    }
   }
 }

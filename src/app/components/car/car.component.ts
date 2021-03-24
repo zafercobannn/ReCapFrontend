@@ -1,64 +1,123 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { Brand } from 'src/app/models/brand';
 import { Car } from 'src/app/models/car';
 import { CarDto } from 'src/app/models/cardto';
-import { CarImage } from 'src/app/models/carimage';
+import { Color } from 'src/app/models/color';
+import { BrandService } from 'src/app/services/brand.service';
 import { CarService } from 'src/app/services/car.service';
-import { CarimageService } from 'src/app/services/carimage.service';
+import { ColorService } from 'src/app/services/color.service';
 
 @Component({
   selector: 'app-car',
   templateUrl: './car.component.html',
-  styleUrls: ['./car.component.css']
+  styleUrls: ['./car.component.css'],
 })
 export class CarComponent implements OnInit {
+  cars: Car[] = [];
+  carDtos: CarDto[] = [];
+  brands: Brand[] = [];
+  colors: Color[] = [];
+  filterText = '';
+  brandId: number;
+  colorId: number;
 
-  cars:Car[] = [];
-  carDtos:CarDto[] = [];
-  constructor(private carService:CarService, private activetedRoute:ActivatedRoute) { }
+  constructor(
+    private carService: CarService,
+    private activetedRoute: ActivatedRoute,
+    private toastrService: ToastrService,
+    private brandService: BrandService,
+    private colorService: ColorService
+  ) {}
 
   ngOnInit(): void {
-    this.activetedRoute.params.subscribe(params => {
-      if(params["brandId"])
-      {
-        this.getCarsByBrandId(params["brandId"])
+    this.activetedRoute.params.subscribe((params) => {
+      if (params['brandId'] && params['colorId']) {
+        this.getFilteredCars(params['brandId'], params['colorId']);
+      } else if (params['brandId']) {
+        this.getCarsByBrandId(params['brandId']);
+      } else if (params['colorId']) {
+        this.getCarsByColorId(params['colorId']);
+      } else {
+        this.getAllCarDtos();
+        this.getColors();
+        this.getBrands();
       }
-      else if(params["colorId"])
-      {
-        this.getCarsByColorId(params["colorId"]);
-      }
-      else
-      {
-        this.getCars();
-      }
-    })
+    });
   }
 
-  getCars()
-  {
-    this.carService.getCars().subscribe(response => {
+  getCars() {
+    this.carService.getCars().subscribe((response) => {
       this.cars = response.data;
-    })
+    });
   }
 
-  getCarDtos(id:number)
-  {
-    this.carService.getCarDtos(id).subscribe(response => {
+  getCarDtos(id: number) {
+    this.carService.getCarDtos(id).subscribe((response) => {
       this.carDtos = response.data;
-    })
+    });
   }
 
-  getCarsByBrandId(id:number)
-  {
-    this.carService.getCarsByBrandId(id).subscribe(response => {
+  getCarsByBrandId(id: number) {
+    this.carService.getCarsByBrandId(id).subscribe((response) => {
       this.cars = response.data;
-    })
+    });
   }
 
-  getCarsByColorId(id:number)
-  {
-    this.carService.getCarsByColorId(id).subscribe(response => {
+  getCarsByColorId(id: number) {
+    this.carService.getCarsByColorId(id).subscribe((response) => {
       this.cars = response.data;
-    })
+    });
+  }
+
+  getAllCarDtos() {
+    this.carService.getAllCarDtos().subscribe((response) => {
+      this.carDtos = response.data;
+    });
+  }
+
+  getBrands() {
+    this.brandService.getBrands().subscribe((response) => {
+      this.brands = response.data;
+    });
+  }
+
+  getColors() {
+    this.colorService.getColors().subscribe((response) => {
+      this.colors = response.data;
+    });
+  }
+
+  getFilteredCars(brandId: number, colorId: number) {
+    this.carService.getFilteredCars(brandId, colorId).subscribe((response) => {
+      this.carDtos = response.data;
+      if(this.carDtos.length == 0)
+      {
+        this.toastrService.error("No cars matching your search were found.");
+      }
+    });
+  }
+  getSelectedColorId(colorId: number) {
+    if(this.colorId == colorId)
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+  getSelectedBrandId(brandId: number) {
+    if(this.brandId == brandId)
+    {
+      console.log(this.brandId);
+      return true;
+    }
+    else
+    {
+      return false;
+    }
   }
 }

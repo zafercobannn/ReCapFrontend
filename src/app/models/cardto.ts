@@ -7,4 +7,6 @@ export interface CarDto{
     dailyPrice:number;
     description:string;
     isRented:boolean;
+    brandID:number,
+    colorID:number
 }

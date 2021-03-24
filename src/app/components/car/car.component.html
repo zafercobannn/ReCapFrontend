@@ -1,36 +1,84 @@
-<h4>Car List</h4>
+<div class="form-group">
+  <input
+    [(ngModel)]="filterText"
+    type="text"
+    class="form-control"
+    id="filterText"
+    placeholder="Search for cars"
+  />
+  <small id="emailHelp" class="form-text text-muted"></small>
+</div>
+<div *ngIf="filterText.length > 2" class="alert alert-primary">
+  Search Key: {{ filterText }}
+</div>
+
+<!-- Filter section start-->
+<div class="row">
+  <div class="col-md-5">
+    <label class="mr-sm-2" for="inlineFormCustomSelect"> Brands </label>
+    <select class="custom-select custom-select-md mb-3" [(ngModel)]="brandId">
+      <option selected>All Brands</option>
+      <option
+        [value]="brand.id"
+        *ngFor="let brand of brands"
+        [selected]="getSelectedBrandId(brand.id)"
+      >
+        {{ brand.name }}
+      </option>
+    </select>
+  </div>
+  <div class="col-md-5">
+    <label class="mr-sm-2" for="inlineFormCustomSelect"> Colors </label>
+    <select class="custom-select custom-select-md mb-3" [(ngModel)]="colorId" aria-placeholder="All Colors">
+      <option
+        *ngFor="let color of colors"
+        [value]="color.id"
+        [selected]="getSelectedColorId(color.id)"
+      >
+        {{ color.name }}
+      </option>
+    </select>
+  </div>
+  <div class="col-md-2" style="margin-top: 30px; width: 100px">
+    <button
+      class="btn btn-success"
+      routerLink="/cars/filter/{{ brandId }}/{{ colorId }}"
+    >
+      Filter
+    </button>
+  </div>
+</div>
+<!-- Filter section end-->
+
 <table class="table">
   <thead class="thead-dark">
     <tr>
       <th scope="col">ID</th>
-      <th scope="col">Brand ID</th>
-      <th scope="col">Color ID</th>
+      <th scope="col">Brand Name</th>
+      <th scope="col">Color Name</th>
       <th scope="col">Car Name</th>
       <th scope="col">Model Year</th>
       <th scope="col">Daily Price</th>
-      <th scope="col">Description</th>
       <th scope="col">Is Rented ?</th>
+      <th></th>
       <th></th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let car of cars">
-      <td>{{ car.id }}</td>
-      <td>{{ car.brandID }}</td>
-      <td>{{ car.colorID }}</td>
-      <td>{{ car.name}}</td>
+    <tr *ngFor="let car of carDtos | filterCar: filterText">
+      <td>{{ car.carID }}</td>
+      <td>{{ car.brandName }}</td>
+      <td>{{ car.colorName }}</td>
+      <td>{{ car.carName }}</td>
       <td>{{ car.modelYear }}</td>
-      <td>{{ car.dailyPrice }} TL</td>
-      <td>{{ car.description |uppercase }}</td>
-      <td>{{ car.isRented }}
-        
-      </td>
+      <td>{{ car.dailyPrice | currency }}</td>
+      <td>{{ car.isRented }}</td>
       <td>
         <button
-          routerLink = "/cars/cardto/{{car.id}}"
+          routerLink="/cars/cardto/{{ car.carID }}"
           type="button"
-          class="btn btn-xs btn-success"
-          (click)="getCarDtos(car.id)"
+          class="btn btn-xs btn-primary"
+          (click)="getCarDtos(car.carID)"
         >
           Detail
         </button>
