@@ -7,4 +7,6 @@ export interface Car{
     dailyPrice:number;
     description:string;
     isRented:boolean;
+    minFindeks:number;
+
 }

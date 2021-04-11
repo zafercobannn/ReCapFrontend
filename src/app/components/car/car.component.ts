@@ -20,8 +20,11 @@ export class CarComponent implements OnInit {
   brands: Brand[] = [];
   colors: Color[] = [];
   filterText = '';
+  filterBrandText="";
+  filterColorText="";
   brandId: number;
   colorId: number;
+  path = 'https://localhost:44373/Images/';
 
   constructor(
     private carService: CarService,
@@ -33,13 +36,16 @@ export class CarComponent implements OnInit {
 
   ngOnInit(): void {
     this.activetedRoute.params.subscribe((params) => {
+      
+      // if (params['brandId']) {
+      //   this.getCarsByBrandId(params['brandId']);
+      // } else if (params['colorId']) {
+      //    this.getCarsByColorId(params['colorId']);
+      // } 
       if (params['brandId'] && params['colorId']) {
         this.getFilteredCars(params['brandId'], params['colorId']);
-      } else if (params['brandId']) {
-        this.getCarsByBrandId(params['brandId']);
-      } else if (params['colorId']) {
-        this.getCarsByColorId(params['colorId']);
-      } else {
+      }
+      else {
         this.getAllCarDtos();
         this.getColors();
         this.getBrands();
@@ -56,18 +62,6 @@ export class CarComponent implements OnInit {
   getCarDtos(id: number) {
     this.carService.getCarDtos(id).subscribe((response) => {
       this.carDtos = response.data;
-    });
-  }
-
-  getCarsByBrandId(id: number) {
-    this.carService.getCarsByBrandId(id).subscribe((response) => {
-      this.cars = response.data;
-    });
-  }
-
-  getCarsByColorId(id: number) {
-    this.carService.getCarsByColorId(id).subscribe((response) => {
-      this.cars = response.data;
     });
   }
 
@@ -90,6 +84,19 @@ export class CarComponent implements OnInit {
   }
 
   getFilteredCars(brandId: number, colorId: number) {
+    if(brandId == null)
+    {
+      this.carService.getCarsByColorId(colorId).subscribe(response => {
+        this.carDtos = response.data;
+      })
+    }
+    else if(colorId == null)
+    {
+      this.carService.getCarsByBrandId(brandId).subscribe(response => {
+        this.carDtos = response.data;
+      })
+    }
+    else{
     this.carService.getFilteredCars(brandId, colorId).subscribe((response) => {
       this.carDtos = response.data;
       if(this.carDtos.length == 0)
@@ -97,6 +104,7 @@ export class CarComponent implements OnInit {
         this.toastrService.error("No cars matching your search were found.");
       }
     });
+  }
   }
   getSelectedColorId(colorId: number) {
     if(this.colorId == colorId)
@@ -112,7 +120,6 @@ export class CarComponent implements OnInit {
   getSelectedBrandId(brandId: number) {
     if(this.brandId == brandId)
     {
-      console.log(this.brandId);
       return true;
     }
     else

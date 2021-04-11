@@ -5,4 +5,5 @@ export interface CustomerDto
     lastName:string;
     email:string;
     companyName:string;
+    findeks?:number;
 }

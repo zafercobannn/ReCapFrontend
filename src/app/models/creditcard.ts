@@ -1,6 +1,7 @@
 export interface CreditCard{
-    ID?:number,
+    id?:number,
     customerID:number;
+    ownerName:string;
     creditCardNumber:string;
     expirationDate:string;
     securityCode:string;

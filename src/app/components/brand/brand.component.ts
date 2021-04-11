@@ -10,7 +10,7 @@ import { BrandService } from 'src/app/services/brand.service';
 })
 export class BrandComponent implements OnInit {
   brands: Brand[] = [];
-  currentBrand: Brand; // Bir Brand'e tıkladığımızda onu current olarak set ediyoruz
+  currentBrand: Brand; 
   filterBrandText="";
   constructor(private brandService:BrandService) {}
 

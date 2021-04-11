@@ -1,5 +1,5 @@
 export interface Payment{
-    ID?:number,
+    id?:number,
     customerID:number;
     price:number;
     creditCardNumber:string;

@@ -12,11 +12,13 @@ export class CustomerComponent implements OnInit {
 
   customers:Customer[] = [];
   customerDtos:CustomerDto[] = [];
+  mail = localStorage.getItem("email");
 
   constructor(private customerService:CustomerService) { }
 
   ngOnInit(): void {
     this.getCustomerDtos();
+    this.getCustomerDtoBySenpai();
   }
 
   getCustomers()
@@ -30,6 +32,13 @@ export class CustomerComponent implements OnInit {
   {
     this.customerService.getCustomerDtos().subscribe(response => {
       this.customerDtos = response.data;
+    });
+  }
+
+  getCustomerDtoBySenpai()
+  {
+    this.customerService.getCustomerDtoByMail(this.mail).subscribe(response => {
+        console.log(response.data);
     });
   }
 }
